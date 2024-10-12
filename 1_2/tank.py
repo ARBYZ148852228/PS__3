@@ -21,9 +21,6 @@ class Tank:
     def create(self):
         self.id = self.canvas.create_rectangle(self.x, self.y, self.x + Tank.SIZE,
                                                self.y + Tank.SIZE, fill = "red")
-    def __str__(self):
-        return (f'Танк1 : {self.model}, Топливо: {self.fuel}, Здоровье: {self.hp},'
-              f'патроны: {self.ammo}, Координаты: ({self.x}, {self.y})')
 
     def fire(self):
         if self.ammo > 0:
@@ -58,6 +55,10 @@ class Tank:
             self.fuel -= 1
             self.repaint()
             print(self)
+
+    def __str__(self):
+        return (f'Танк1 : {self.model}, Топливо: {self.fuel}, Здоровье: {self.hp},'
+              f'патроны: {self.ammo}, Координаты: ({self.x}, {self.y})')
 
 
 
