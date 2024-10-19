@@ -1,7 +1,10 @@
+from hitbox import HitBox
+
 class Tank:
     count = 0
     SIZE = 100
-    def __init__(self,canvas, x, y, model, ammo = 100, speed = 10):
+    def __init__(self,canvas, x, y, model= 'Tan k', ammo = 100, speed = 10):
+
         Tank.count += 1
         self.model = model
         self.fuel = 500
@@ -13,10 +16,12 @@ class Tank:
         self.y = max(y, 0)
         self.speed = speed
         self.canvas = canvas
+        self.__hitbox = HitBox(self.x, self.y, Tank.SIZE, Tank.SIZE)
         self.create()
 
     def repaint(self):
         self.canvas.moveto(self.id, x = self.x, y= self.y)
+        self.__update_hitbox()
 
     def create(self):
         self.id = self.canvas.create_rectangle(self.x, self.y, self.x + Tank.SIZE,
@@ -32,7 +37,7 @@ class Tank:
             self.y += -self.speed
             self.fuel -= 1
             self.repaint()
-            print(self)
+            # print(self)
 
 
     def backward(self):
@@ -40,25 +45,31 @@ class Tank:
             self.y += self.speed
             self.fuel -= 1
             self.repaint()
-            print(self)
+            # print(self)
 
     def left(self):
         if self.fuel > 0:
             self.x += -self.speed
             self.fuel -= 1
             self.repaint()
-            print(self)
+            # print(self)
 
     def right(self):
         if self.fuel > 0:
             self.x += self.speed
             self.fuel -= 1
             self.repaint()
-            print(self)
+            # print(self)
+
+    def __update_hitbox(self):
+        self.canvas.moveto(self.x, self.y)
+
+    def intersects(self, other_tank):
+        return self.__hitbox.intersects(other_tank.__hitbox)
 
     def __str__(self):
         return (f'Танк1 : {self.model}, Топливо: {self.fuel}, Здоровье: {self.hp},'
-              f'патроны: {self.ammo}, Координаты: ({self.x}, {self.y})
+              f'патроны: {self.ammo}, Координаты: ({self.x}, {self.y}')
 
 
 
