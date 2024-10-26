@@ -1,5 +1,6 @@
 # Перенсти код из 2_1 hitbox 5.2
 class Hitbox:
+
     def __init__(self, x, y, width, height):
         self.__x = x
         self.__y = y

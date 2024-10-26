@@ -1,18 +1,29 @@
 # Перенести код из 1_2 tank часть 2
 from hitbox import Hitbox
+from tkinter import  PhotoImage, NW
 
 class Tank:
     __count = 0
-    __SIZE = 100
-    def __init__(self, canvas, x, y,model = 'Т-14 Армата', ammo = 100, speed = 10):
-        self.__hitbox = Hitbox(x, y, Tank.__SIZE, Tank.__SIZE)   # 1. добавить атрибут hitbox
+    # __SIZE = 100
+    def __init__(self, canvas, x, y,model = 'Т-14 Армата', ammo = 100, speed = 10,
+                 file_up = "../img/tank_up.png",
+                 file_down = "../img/tank_down.png",
+                 file_left = "../img/tank_left.png",
+                 file_right = "../img/tank_right.png"):
+        self.__skin_up = PhotoImage(file=file_up)
+        self.__skin_down = PhotoImage(file=file_down)
+        self.__skin_left = PhotoImage(file=file_left)
+        self.__skin_right = PhotoImage(file=file_right)
+        self.__vx = 0
+        self.__vy = 0
+        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size())   # 1. добавить атрибут hitbox
         self.__canvas = canvas
         Tank.__count += 1
         self.__model = model
         self.__hp = 100
         self.__xp = 0
         self.__ammo = ammo
-        self.__fuel = 100
+        self.__fuel = 10000
         self.__speed = speed
         self.__x = x
         self.__y = y
@@ -20,19 +31,30 @@ class Tank:
             self.__x = 0
         if self.__y < 0:
             self.__y = 0
-
         self.__create()
 
-    @staticmethod
-    def get_quantity():
+
+
+#---------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------
+
+
+    def get_quality(self):
         return Tank.__count
 
-    @staticmethod
-    def get_size():
-        return Tank.__SIZE
+    def get_size(self):
+        return self.__skin_up.width()
 
-#---------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------
+
+
+
+    def get_x(self):
+        return self.__x
+
+    def get_y(self):
+        return self.__y
+
+
     def get_ammo(self):
         return self.__ammo
 
@@ -57,43 +79,45 @@ class Tank:
             print('стреляю')
 
     def forvard(self):
-        if self.__fuel > 0:
-            self.__y += -self.__speed
-            self.__update_hitbox()  # 2.1 вызвать метод движения HB при смене позиции
-            self.__fuel -= 1
-            self.__repaint()
-            print(self)
+        self.__vx = 0
+        self.__vy = -1
+        self.__canvas.itemconfig(self.__id, image=self.__skin_up)
+
 
     def backward(self):
-        if self.__fuel > 0:
-            self.__y += self.__speed
-            self.__update_hitbox()   # 2.1 вызвать метод движения HB при смене позиции
-            self.__fuel -= 1
-            self.__repaint()
-            print(self)
+        self.__vx = 0
+        self.__vy = 1
+        self.__canvas.itemconfig(self.__id, image=self.__skin_down)
+
 
     def left(self):
-        if self.__fuel > 0:
-            self.__x += -self.__speed
-            self.__update_hitbox()  # 2.1 вызвать метод движения HB при смене позиции
-            self.__fuel -= 1
-            self.__repaint()
-            print(self)
+        self.__vx = -1
+        self.__vy = 0
+        self.__canvas.itemconfig(self.__id, image=self.__skin_left)
+
 
     def right(self):
-        if self.__fuel > 0:
-            self.__x += self.__speed
-            self.__update_hitbox()  # 2.1 вызвать метод движения HB при смене позиции
-            self.__fuel -= 1
+        self.__vx = 1
+        self.__vy = 0
+        self.__canvas.itemconfig(self.__id, image=self.__skin_right)
+
+    def update(self):
+        if self.__fuel > self.__speed:
+            self.__x += self.__vx * self.__speed
+            self.__x += self.__vy * self.__speed
+            self.__fuel -= self.__speed
+            self.__update_hitbox()
             self.__repaint()
-            print(self)
 
     def __create(self):
-        self.id = self.__canvas.create_rectangle(self.__x, self.__y, self.__x + Tank.__SIZE,
-                                                 self.__y + Tank.__SIZE, fill='red')
+        self.__id = self.__canvas.create_image(self.__x, self.__y,
+                                               image = self.__skin_up, anchor=NW)
+
+
 
     def __repaint(self):
-        self.__canvas.moveto(self.id, x = self.__x, y = self.__y)
+        self.__canvas.moveto(self.__id, x = self.__x, y = self.__y)
+
 
 
 
@@ -104,6 +128,13 @@ class Tank:
 #    3   метод проверки столкновения - обертка
     def inersects(self, other_tank):
         return self.__hitbox.intersects(other_tank.__hitbox)
+
+    @staticmethod
+    def get_quantity():
+        return Tank.__count
+
+    def get_size(self):
+        return self.__skin_up.width()
 
     def __str__(self):
         return (f'координаты: x = {self.__x}, y = {self.__y}, модель: {self.__model}, '
