@@ -8,7 +8,7 @@ KEY_W = 87
 KEY_S = 83
 KEY_A = 65
 KEY_D = 68
-FPS =60
+FPS = 60
 
 
 def update():
@@ -19,8 +19,9 @@ def update():
     w.after(1000//FPS, update)
 
 def check_collision():
-    if player.intersects(enemy):  # 4 Вызвать обертку
-        print('Танки столкнулись')
+    player.intersects(enemy)
+    enemy.intersects(player)
+
 
 def key_press(event):
     if event.keycode == KEY_W:
@@ -40,7 +41,6 @@ canv.pack()
 
 player = Tank(canvas = canv, x = 100, y = 50, ammo = 100, speed = 1, bot = False)
 enemy = Tank(canvas = canv, x = 300, y = 300, ammo = 100, speed = 1, bot = True)
-
 enemy.set_target(player)
 
 w.bind('<KeyPress>', key_press)

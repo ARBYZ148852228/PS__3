@@ -31,6 +31,7 @@ class Hitbox:
 
     def __get_y(self):
         return self.__y
+
     def __set_y(self, y):
         self.__y = y
 

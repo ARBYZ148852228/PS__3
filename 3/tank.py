@@ -177,6 +177,14 @@ class Tank:
     def __repaint(self):
         self.__canvas.moveto(self.__id, x = self.__x, y = self.__y)
 
+    def undo_move(self):
+        self.__x -= self.__dx
+        self.__y -= self.__dy
+        self.__update_hitbox()
+        self.__repaint()
+        self.__dx = 0
+        self.__dy = 0
+
 
 
 
@@ -186,9 +194,15 @@ class Tank:
 
 #    3 метод проверки столкновения - обертка
     def inersects(self, other_tank):
-        return self.__hitbox.intersects(other_tank.__hitbox)
+        value = self.__hitbox.intersects(other_tank.__hitbox)
+        if value:
+            self.__undo_move()
+        if self.__bot:
+            self.__AI_change_orientation()
+        return value
 
     @staticmethod
+
     def get_quantity():
         return Tank.__count
 
