@@ -1,6 +1,7 @@
 # Перенести код из 1_2 tank часть 2
 from hitbox import Hitbox
 from tkinter import  PhotoImage, NW
+from random import randint # 2. добавить импорт randint
 
 class Tank:
     __count = 0
@@ -9,14 +10,19 @@ class Tank:
                  file_up = "../img/tank_up.png",
                  file_down = "../img/tank_down.png",
                  file_left = "../img/tank_left.png",
-                 file_right = "../img/tank_right.png"):
+                 file_right = "../img/tank_right.png",
+                 bot = True):
+        self.bot = bot
         self.__skin_up = PhotoImage(file=file_up)
         self.__skin_down = PhotoImage(file=file_down)
         self.__skin_left = PhotoImage(file=file_left)
         self.__skin_right = PhotoImage(file=file_right)
+
+
+        self.__target = None
         self.__vx = 0
         self.__vy = 0
-        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size())   # 1. добавить атрибут hitbox
+        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size(), padding = 0)   # 1. добавить атрибут hitbox
         self.__canvas = canvas
         Tank.__count += 1
         self.__model = model
@@ -33,26 +39,77 @@ class Tank:
             self.__y = 0
         self.__create()
 
+# ---------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
+# -------------------+AI AI AI AI AI AI AI AI AI AI AI+----------------------------------------------------------------------------------------
+
+    def __AI(self):
+        if randint(1, 30) == 1:
+            if randint(1, 10) < 9 and self.__target is not None:
+                self.__AI_goto_target()
+            else:
+                self.__AI_change_orientation()
+
+
+
+
+    def __AI_change_orientation(self):
+        rand = randint(0, 3)
+        if rand == 0:
+            self.left()
+        if rand == 1:
+            self.right()
+        if rand == 2:
+            self.forvard()
+        if rand == 3:
+            self.backward()
+
+
+
+
+
+
 
 
 #---------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------
 
+    def set_target(self, target):
+        self.__target = target
 
-    def get_quality(self):
+    def __AI_goto_target(self):
+        if randint(1, 2) ==1:
+
+            if self.__target.get_X() < self.get_x():
+                self.left()
+            else:
+                self.right()
+        else:
+            if self.__target.get_y() < self.get_y():
+                self.backward()
+            else:
+                self.forvard()
+
+
+
+
+
+
+    def get_quantity(self):
         return Tank.__count
 
     def get_size(self):
         return self.__skin_up.width()
-
-
-
 
     def get_x(self):
         return self.__x
 
     def get_y(self):
         return self.__y
+
+    def intersects(self, other_tank):
+        return self.__hitbox.intersects(other_tank.__hitbox)
+
 
 
     def get_ammo(self):
@@ -103,6 +160,8 @@ class Tank:
 
     def update(self):
         if self.__fuel > self.__speed:
+            if self.__bot:
+                self.__AI()
             self.__x += self.__vx * self.__speed
             self.__x += self.__vy * self.__speed
             self.__fuel -= self.__speed
@@ -125,7 +184,7 @@ class Tank:
     def __update_hitbox(self):
         self.__hitbox.moveto(self.__x, self.__y)
 
-#    3   метод проверки столкновения - обертка
+#    3 метод проверки столкновения - обертка
     def inersects(self, other_tank):
         return self.__hitbox.intersects(other_tank.__hitbox)
 
