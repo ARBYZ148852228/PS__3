@@ -1,7 +1,8 @@
 # Перенести код из 1_2 tank часть 2
 from hitbox import Hitbox
 from tkinter import  PhotoImage, NW
-from random import randint # 2. добавить импорт randint
+from random import randint # 2. добавить импорт ran
+import world
 
 class Tank:
     __count = 0
@@ -90,6 +91,17 @@ class Tank:
             else:
                 self.forvard()
 
+    def __check_out_of_world(self):
+        if self.__hitbox.left < 0 or \
+            self.__hitbox.top < 0 or \
+            self.__hitbox.right >= world.WIDTH or \
+            self.__hitbox.bottom >= world.HEIGHT:
+            self.__undo_move()
+            if self.__bot:
+                self.__AI_change_orintation()
+
+
+
 
 
 
@@ -171,6 +183,12 @@ class Tank:
     def __create(self):
         self.__id = self.__canvas.create_image(self.__x, self.__y,
                                                image = self.__skin_up, anchor=NW)
+
+    def update(self):
+        if self.__fuel >= self.__speed:
+            ...
+        self.__update_hitbox()
+        self.__check_out_of_world()
 
 
 

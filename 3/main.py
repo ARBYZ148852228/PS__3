@@ -12,6 +12,7 @@ FPS = 60
 
 
 def update():
+
     enemy.update()
     player.update()
     check_collision()
