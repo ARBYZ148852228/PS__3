@@ -1,7 +1,7 @@
 # Перенести код из директории 1_2 файл main
 from tank import Tank
 from tkinter import*
-
+import world
 
 
 KEY_W = 87
@@ -37,7 +37,7 @@ def key_press(event):
                                    # смоделировать ситуацию столкновения
 w = Tk()
 w.title('Танки на минималках 2.0')
-canv = Canvas(w, width = 800, height = 600, bg = 'alice blue')
+canv = Canvas(w, width = world.WIDTH, height = world.HEIGHT, bg = 'alice blue')
 canv.pack()
 
 player = Tank(canvas = canv, x = 100, y = 50, ammo = 100, speed = 1, bot = False)

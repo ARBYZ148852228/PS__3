@@ -100,11 +100,7 @@ class Tank:
             if self.__bot:
                 self.__AI_change_orintation()
 
-
-
-
-
-
+    def __undo_move(self):
 
 
     def get_quantity(self):
