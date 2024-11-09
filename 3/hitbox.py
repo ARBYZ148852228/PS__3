@@ -1,8 +1,7 @@
-# Перенсти код из 2_1 hitbox 5.2
-class Hitbox:
 
+class Hitbox:
     def __init__(self, x, y, width, height, padding = 0):
-        self.pad = padding
+        self.padding = padding
         self.__x = x
         self.__y = y
         self.__set_width(width)
@@ -17,7 +16,6 @@ class Hitbox:
 
     def __get_height(self):
         return self.__height
-
     def __set_height(self, height):
         if height < 0 :
             height = 0
@@ -25,13 +23,11 @@ class Hitbox:
 
     def __get_x(self):
         return self.__x
-
     def __set_x(self, x):
         self.__x = x
 
     def __get_y(self):
         return self.__y
-
     def __set_y(self, y):
         self.__y = y
 
@@ -48,18 +44,15 @@ class Hitbox:
     def __str__(self):
         return f"({self.__x=}, {self.__y=}, {self.__width=}, {self.__height=})"
 
-
     def __get_top(self):
-        return self.y + self.pad
-
+        return self.y + self.padding
     def __get_bottom(self):
-        return self.y + self.height - self.pad
+        return self.y + self.height - self.padding
 
     def __get_left(self):
-        return self.x + self.pad
-
+        return self.x + self.padding
     def __get_right(self):
-        return self.x + self.width - self.pad
+        return self.x + self.width - self.padding
 
 
     def intersects(self, other):
@@ -84,3 +77,4 @@ class Hitbox:
     bottom = property(__get_bottom)
     left = property(__get_left)
     right = property(__get_right)
+

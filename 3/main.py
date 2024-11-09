@@ -1,27 +1,26 @@
-# Перенести код из директории 1_2 файл main
 from tank import Tank
 from tkinter import*
 import world
+
 
 
 KEY_W = 87
 KEY_S = 83
 KEY_A = 65
 KEY_D = 68
+
+
 FPS = 60
-
-
 def update():
+    player.update()
 
     enemy.update()
-    player.update()
     check_collision()
-    player.forvard()
     w.after(1000//FPS, update)
 
 def check_collision():
-    player.intersects(enemy)
-    enemy.intersects(player)
+    player.inersects(enemy)
+    enemy.inersects(player)
 
 
 def key_press(event):
@@ -33,18 +32,25 @@ def key_press(event):
         player.left()
     if event.keycode == KEY_D:
         player.right()
-    check_collision()           # 5 вызвать проверку столкновений при событиях нажатия на клавиши
-                                   # смоделировать ситуацию столкновения
+
+
 w = Tk()
 w.title('Танки на минималках 2.0')
-canv = Canvas(w, width = world.WIDTH, height = world.HEIGHT, bg = 'alice blue')
+# 2 ширина и высота определяются через модуль world
+canv = Canvas(w, width = world.SCREEN_WIDTH, height = world.SCREEN_HEIGHT,
+              bg = 'alice blue')
 canv.pack()
 
-player = Tank(canvas = canv, x = 100, y = 50, ammo = 100, speed = 1, bot = False)
-enemy = Tank(canvas = canv, x = 300, y = 300, ammo = 100, speed = 1, bot = True)
+player = Tank(canvas = canv, x = 100, y = 50, ammo = 100, speed=1, bot = False)
+enemy = Tank(canvas = canv, x = 300, y = 300, ammo = 100, speed=1, bot = True)
+
+
 enemy.set_target(player)
+
 
 w.bind('<KeyPress>', key_press)
 
-w.update()
+
+
+update()
 w.mainloop()
