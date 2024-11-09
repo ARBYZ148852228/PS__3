@@ -12,9 +12,9 @@ def set_camera_xy(x, y):
     if y < 0:
         y = 0
 
-    if WIDTH - SCREEN_WIDTH:
+    if x > WIDTH - SCREEN_WIDTH:
         x = WIDTH - SCREEN_WIDTH
-    if HEIGHT - SCREEN_HEIGHT:
+    if y> HEIGHT > SCREEN_HEIGHT:
         y = HEIGHT - SCREEN_HEIGHT
 
     _camera_x = x
@@ -22,6 +22,13 @@ def set_camera_xy(x, y):
 
 def move_camera(delta_x, delta_y):
     set_camera_xy(_camera_x + delta_x, _camera_y + delta_y)
+
+def get_screen_x(world_X):
+    return world_X - _camera_x
+
+def get_screen_y(world_Y):
+    return world_Y - _camera_y
+
 
 
 
