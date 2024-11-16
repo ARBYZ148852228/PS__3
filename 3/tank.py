@@ -4,6 +4,9 @@ from hitbox import Hitbox
 from tkinter import *
 from random import randint
 import world
+import texture as skin
+
+
 
 class Tank:
     __count = 0
@@ -17,10 +20,10 @@ class Tank:
                  bot = True):
         self.__bot = bot
         self.__target = None
-        self.__skin_up = PhotoImage(file = file_up)
-        self.__skin_down = PhotoImage(file = file_down)
-        self.__skin_left = PhotoImage(file = file_left)
-        self.__skin_right = PhotoImage(file = file_right)
+        #self.__skin_up = PhotoImage(file = file_up)
+        #self.__skin_down = PhotoImage(file = file_down)
+        #self.__skin_left = PhotoImage(file = file_left)
+        #self.__skin_right = PhotoImage(file = file_right)
         Tank.__count += 1
         self.__hitbox = Hitbox(x, y, self.get_sise(), self.get_sise(), padding=0)
         self.__canvas = canvas
@@ -85,22 +88,22 @@ class Tank:
     def forvard(self):
         self.__vx = 0
         self.__vy = -1
-        self.__canvas.itemconfig(self.__id, image = self.__skin_up)
+        self.__canvas.itemconfig(self.__id, image = skin.get('tank_up'))
 
     def backward(self):
         self.__vx = 0
         self.__vy = 1
-        self.__canvas.itemconfig(self.__id, image = self.__skin_down)
+        self.__canvas.itemconfig(self.__id, image = skin.get('tank_down'))
 
     def left(self):
         self.__vx = -1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id, image = self.__skin_left)
+        self.__canvas.itemconfig(self.__id, image = skin.get('tank_left'))
 
     def right(self):
         self.__vx = 1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id, image = self.__skin_right)
+        self.__canvas.itemconfig(self.__id, image = skin.get('tank_right'))
 
 
     def update(self):
@@ -131,15 +134,23 @@ class Tank:
         self.__dx = 0
         self.__dy = 0
 
+    def __del__(self):
+        print(f'танк удален')
+        try:
+            self.__canvas.delete(self.__id)
+        except Exception:
+            pass
+
 
     def __create(self):
-        self.__id = self.__canvas.create_image(self.__x, self.__y, image = self.__skin_up, anchor ='nw')
+        self.__id = self.__canvas.create_image(self.__x, self.__y, image = skin.get('tank_up'),
+                                               anchor ='nw')
 
     def __repaint(self):
         self.__canvas.moveto(self.__id, x = world.get_screen_x(self.__x),
                              y = world.get_screen_y(self.__y))
 
-    def stop(self):
+    def stop(self) -> object:
         self.__vx = 0
         self.__vy = 0
 
@@ -187,7 +198,8 @@ class Tank:
 
 
     def get_sise(self):
-        return self.__skin_up.width()
+        return skin.get('tank_up').width()
+
 # 3 проверка выхода танка за  мир
     def __chek_out_of_world(self):
         if self.__hitbox.left < 0 or \
