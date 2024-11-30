@@ -4,8 +4,6 @@ import world
 import tanks_collection
 import texture
 
-
-
 KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37, 39, 38, 40
 KEY_W = 87
 KEY_S = 83
@@ -18,6 +16,10 @@ def load_textures():
     texture.load('tank_down', '../img/tank_down.png')
     texture.load('tank_left', '../img/tank_left.png')
     texture.load('tank_right', '../img/tank_right.png')
+    texture.load(world.BRICK, '../img/brick.png')
+    texture.load(world.WATER, '../img/water.png')
+    texture.load(world.CONCRETE, '../img/wall.png')
+
     print(texture._frames)
 
 
@@ -37,8 +39,6 @@ def update():
 #def check_collision():
     #player.intersects(enemy)
     #enemy.intersects(player)
-
-
 
 def key_press(event):
     player = tanks_collection.get_player()
@@ -70,7 +70,7 @@ canv = Canvas(w, width = world.SCREEN_WIDTH, height = world.SCREEN_HEIGHT,
               bg = 'alice blue')
 canv.pack()
 load_textures()
-
+world.initialize(canv)
 w.bind('<KeyPress>', key_press)
 
 tanks_collection.initialize(canv)
