@@ -11,18 +11,26 @@ GROUND = 'g'
 WATER = 'w'
 CONCRETE = 'c'
 BRICK = 'b'
-
+BLOCK_SIZE = 64
 
 _Canvas = None
 _map = []
 
+def create_map(rows = 20, cols = 20):
+    global _map
+    _map = []
+    for i in range(rows):
+        row = []
+        for j in range(cols):
+            cell = _Cell(_Canvas, CONCRETE, BLOCK_SIZE * j, BLOCK_SIZE * i)
+            row.append(cell)
+        _map.append(row)
+
+
 def initialize(canv):
     global _Canvas, _map
     _Canvas = canv
-    _map.append(_Cell(_Canvas, WATER, 0, 0))
-    _map.append(_Cell(_Canvas, BRICK, 64, 0))
-    _map.append(_Cell(_Canvas, CONCRETE, 128, 0))
-
+    create_map(20, 20)
 
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
