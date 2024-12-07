@@ -28,6 +28,7 @@ def update():
     player = tanks_collection.get_player()
     world.set_camera_xy(player.get_x() - world.SCREEN_WIDTH // 2 + player.get_sise()//2,
                         player.get_y() - world.SCREEN_HEIGHT // 2 + player.get_sise()//2)
+    world.update_map()
 
     #player.update()
     #neutral.update()
@@ -67,7 +68,7 @@ w = Tk()
 w.title('Танки на минималках 52.0')
 # 2 ширина и высота определяются через модуль world
 canv = Canvas(w, width = world.SCREEN_WIDTH, height = world.SCREEN_HEIGHT,
-              bg = 'alice blue')
+              bg = '#8ccb5e')
 canv.pack()
 load_textures()
 world.initialize(canv)
