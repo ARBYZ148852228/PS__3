@@ -16,7 +16,7 @@ BLOCK_SIZE = 64
 
 _Canvas = None
 _map = []
-block = ([BRICK, WATER, CONCRETE])
+
 
 
 def get_rows():
